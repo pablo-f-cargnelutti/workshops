@@ -1,13 +1,27 @@
 package edu.workana.stack;
 
-public class BaseElement extends Element {
+public class BaseElement<E> extends Element<E> {
 
-  BaseElement(int value, Element previous) {
+  BaseElement() {
+    this(null, null);
+  }
+  
+  BaseElement(E value, Element<E> previous) {
     super(value, previous);
   }
 
   @Override
-  public int pop() {
+  public E pop() {
     throw new StackEmpty();
+  }
+
+  @Override
+  public int size() {
+    return 0;
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return true;
   }
 }

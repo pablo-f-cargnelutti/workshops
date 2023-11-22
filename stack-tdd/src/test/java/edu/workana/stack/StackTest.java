@@ -17,49 +17,50 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * 3. You are not allowed to write any more production code than is sufficient to pass the one failing unit test.
  */
 class StackTest {
-  
-  @Test
-  void canCreateStack() {
-    var stack = new Stack();
-    assertThat(stack, is(notNullValue()));
+
+  private Stack<Integer> stack;
+
+  @BeforeEach
+  void setUp() {
+    // Arrange, Given
+    stack = new Stack<>();
   }
 
   @Test
   void whenCreateStackIsEmpty() {
-    var stack = new Stack();
     assertThat(stack.isEmpty(), is(true));
   }
 
   @Test
   void canPushToStack() {
-    var stack = new Stack();
-    
+    // Act, When
     stack.push(10);
 
+    // Assert, Then
     assertThat(stack.isEmpty(), is(false));    
   }
 
   @Test
   void canPopFromStack() {
-    var stack = new Stack();
+    // Arrange, Given
     stack.push(10);
     
+    // Act, When
     var popped = stack.pop();
     
+    // Assert
     assertThat(stack.isEmpty(), is(true));
     assertThat(popped, is(10));
   }
 
   @Test
   void cannotPopFromEmpty() {
-    var stack = new Stack();
-
+    // When, then
     assertThrows(StackEmpty.class, stack::pop);
   }
 
   @Test
   void canPushAndPopAsStack() {
-    var stack = new Stack();
     stack.push(10);
     stack.push(20);
 
@@ -71,7 +72,6 @@ class StackTest {
 
   @Test
   void canPushAndPopAllValuesAsStack() {
-    var stack = new Stack();
     stack.push(10);
     stack.push(20);
 
@@ -81,6 +81,28 @@ class StackTest {
     assertThat(stack.isEmpty(), is(true));
     assertThat(popped, is(20));
     assertThat(popped2, is(10));
+  }
+
+  @Test
+  void canCreateAStackOfString() {
+    var stack = new Stack<String>();
+    stack.push("20");
+
+    var popped = stack.pop();
+
+    assertThat(stack.isEmpty(), is(true));
+    assertThat(popped, is("20"));
+  }
+
+  @Test
+  void canGetStackSize() {
+    stack.push(10);    
+    stack.push(20);
+    stack.push(30);
+
+    assertThat(stack.size(), is(3));
+    stack.pop();
+    assertThat(stack.size(), is(2));
   }
   
 }

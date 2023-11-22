@@ -1,23 +1,27 @@
 package edu.workana.stack;
 
-class Stack {
-  private Element element;
+class Stack<E> {
+  private Element<E> element;
   
   Stack() {
-    element = new BaseElement(-1, null);
+    element = new BaseElement<>();
   }
   
   public boolean isEmpty() {
-    return element.previous == null;
+    return element.isEmpty();
   }
 
-  public void push(int i) {
-    element = new Element(i, element);
+  public void push(E i) {
+    element = new Element<>(i, element);
   }
 
-  public int pop() {
+  public E pop() {
     var value = element.pop();
     element = element.previous;
     return value;
+  }
+
+  public int size() {
+    return element.size();
   }
 }
