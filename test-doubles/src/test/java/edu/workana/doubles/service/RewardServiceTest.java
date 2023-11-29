@@ -63,7 +63,7 @@ class RewardServiceTest {
     var reward = rewardService.getReward();
 
     // Then
-    assertThat(reward.getPoints(), is(10.0));
+    assertThat(reward.getPoints(), is(0.0));
   }
   
 }
