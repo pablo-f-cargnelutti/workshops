@@ -1,4 +1,4 @@
-package edu.workana.doubles;
+package edu.workana.doubles.service;
 
 import edu.workana.doubles.persistence.UserRepository;
 import edu.workana.doubles.service.UserProfileService;
@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,5 +31,6 @@ class UserProfileServiceTest {
         
         // Then
         verify(userRepository, times(1)).getCurrentUserProfile();
+        assertThat(userProfile, is(notNullValue()));
     }
 }

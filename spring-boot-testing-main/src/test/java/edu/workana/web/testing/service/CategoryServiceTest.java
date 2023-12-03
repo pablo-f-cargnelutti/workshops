@@ -2,13 +2,16 @@ package edu.workana.web.testing.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalToObject;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -35,6 +38,11 @@ class CategoryServiceTest {
   @InjectMocks
   private CategoryServiceImpl categoryService;
 
+  //  @BeforeEach
+  //  void setup () {
+  //    categoryService = new CategoryServiceImpl(categoryRepository);
+  //  }
+
   @BeforeAll
   static void initializeFaker() {
     faker = new Faker(Locale.ENGLISH);
@@ -55,21 +63,29 @@ class CategoryServiceTest {
 
   @Test
   void shouldReturnCategoryByValidCategoryId() {
+    // given
+    var category = randomCategory();
+    when(categoryRepository.findById(any())).thenReturn(Optional.of(category));
 
+    // When
+    var categoryFound = categoryService.findById("12123");
+
+    // Then
+    assertThat(categoryFound, equalToObject(category));
   }
 
   @Test
   void shouldSaveCategoryWithValidData() {
-    
+
   }
 
   private List<Category> dummyCategories() {
-    return Stream.generate(this::ramdomCategory)
+    return Stream.generate(this::randomCategory)
         .limit(5)
         .toList();
   }
 
-  private Category ramdomCategory() {
+  private Category randomCategory() {
     return Category.builder()
         .id(UUID.randomUUID().toString())
         .name(faker.commerce().department())

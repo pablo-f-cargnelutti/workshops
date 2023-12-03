@@ -1,21 +1,14 @@
-package edu.workana.doubles;
+package edu.workana.doubles.service;
 
 import edu.workana.doubles.entity.UserProfile;
-import edu.workana.doubles.persistence.UserRepository;
-import edu.workana.doubles.service.RewardService;
-import edu.workana.doubles.service.UserProfileService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -41,6 +34,19 @@ class RewardServiceTest {
   }
 
   @Test
+  void whenBasicSubscriptionReducesTheRewardPoints() {
+    // Arrange, Given
+    var desiredUserProfile = new UserProfile("basic", 10);
+    when(userProfileService.getCurrentUserProfile()).thenReturn(desiredUserProfile);
+
+    // Act, When
+    var reward = rewardService.getReward();
+
+    // Assert, Then
+    assertThat(reward.getPoints(), is(7.0));
+  }
+  
+  @Test
   void whenPremiumSubscriptionDoublesTheRewardPoints() {
     // Arrange, Given
     var desiredUserProfile = new UserProfile("premium", 10);
@@ -49,21 +55,18 @@ class RewardServiceTest {
     // Act, When
     var reward = rewardService.getReward();
     
-    // Then
+    // Assert, Then
     assertThat(reward.getPoints(), is(20.0));    
   }
 
   @Test
-  void whenInvalidSubscriptionThenRewardPointsRemainUnchanged() {
+  void whenInvalidSubscriptionThenShouldFail() {
     // Arrange, Given
-    var desiredUserProfile = new UserProfile("fruta", 10);
+    var desiredUserProfile = new UserProfile("fruit", 10);
     when(userProfileService.getCurrentUserProfile()).thenReturn(desiredUserProfile);
 
-    // Act, When
-    var reward = rewardService.getReward();
-
-    // Then
-    assertThat(reward.getPoints(), is(0.0));
+    // When, Then
+    assertThrows(InvalidSubscription.class, ()-> rewardService.getReward());
   }
   
 }

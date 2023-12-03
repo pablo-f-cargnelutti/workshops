@@ -11,7 +11,6 @@ public class UserProfileService {
     }
     
     public UserProfile getCurrentUserProfile() {
-        userRepository.getCurrentUserProfile();
         return userRepository.getCurrentUserProfile();
     }
 }

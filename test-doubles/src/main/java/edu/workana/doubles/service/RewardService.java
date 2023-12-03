@@ -18,9 +18,10 @@ public class RewardService {
         double rewardPoints = 0;
         if (subscription.equalsIgnoreCase("basic")) {
             rewardPoints = points * 0.7;
-        }
-        if (subscription.equalsIgnoreCase("premium")) {
+        } else if (subscription.equalsIgnoreCase("premium")) {
             rewardPoints = points * 2;
+        } else {
+            throw new InvalidSubscription(subscription);
         }
         
         return new Reward(subscription, rewardPoints);
