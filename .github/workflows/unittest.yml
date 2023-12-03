@@ -10,8 +10,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          path: 'spring-boot-testing-main'  # Specify the path to your project directory
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
@@ -20,7 +18,7 @@ jobs:
           java-version: '17'
 
       - name: Build and run tests
-        run: mvn clean test
+        run: mvn -f spring-boot-testing-main/pom.xml clean test
 
   coverage:
     runs-on: ubuntu-latest
@@ -29,8 +27,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          path: 'spring-boot-testing-main'  # Specify the path to your project directory
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
