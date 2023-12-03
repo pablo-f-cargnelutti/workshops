@@ -20,7 +20,7 @@ jobs:
           java-version: '17'
 
       - name: Build and run tests
-        run: mvn -f spring-boot-testing-main/pom.xml clean test
+        run: mvn clean test
 
   coverage:
     runs-on: ubuntu-latest
