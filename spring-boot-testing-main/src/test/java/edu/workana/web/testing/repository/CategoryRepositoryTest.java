@@ -43,6 +43,7 @@ class CategoryRepositoryTest extends BaseMongoContainer {
   private List<Category> dummyCategories() {
     return Stream.generate(this::randomCategory)
         .limit(5)
+        .distinct()
         .toList();
   }
 
