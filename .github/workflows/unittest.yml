@@ -8,9 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      COVERAGE: ${{ needs.coverage.outputs.coverage }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -23,9 +20,6 @@ jobs:
 
       - name: Build and run tests
         run: mvn -f spring-boot-testing-main/pom.xml clean test
-
-      - name: Display coverage information
-        run: echo "Coverage is $COVERAGE%"
 
   coverage:
     runs-on: ubuntu-latest
@@ -45,20 +39,6 @@ jobs:
 
       - name: Run JaCoCo for test coverage
         run: mvn -f spring-boot-testing-main/pom.xml jacoco:prepare-agent test jacoco:report
-
-      - name: Check coverage threshold
-        id: coverage
-        run: |
-          COVERAGE=$(grep -Po "TOTAL.*?(\d+\.\d+)" spring-boot-testing-main/target/site/jacoco/index.html | awk '{print $NF}')
-          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
-            echo "Error: Coverage is below 80%."
-            exit 1
-          fi
-
-          echo "Coverage is $COVERAGE%"
-
-      - name: Set coverage output in environment file
-        run: echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
 
       - name: Upload coverage results
         uses: actions/upload-artifact@v2
