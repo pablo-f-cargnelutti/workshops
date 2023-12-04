@@ -8,8 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    outputs:
-      coverage: ${{ steps.coverage.outputs.coverage }}
+    env:
+      COVERAGE: ${{ needs.coverage.outputs.coverage }}
 
     steps:
       - name: Checkout code
@@ -24,12 +24,11 @@ jobs:
       - name: Build and run tests
         run: mvn -f spring-boot-testing-main/pom.xml clean test
 
+      - name: Display coverage information
+        run: echo "Coverage is $COVERAGE%"
+
   coverage:
     runs-on: ubuntu-latest
-    needs: build
-
-    outputs:
-      coverage: ${{ steps.coverage.outputs.coverage }}
 
     steps:
       - name: Checkout code
@@ -55,10 +54,11 @@ jobs:
             echo "Error: Coverage is below 80%."
             exit 1
           fi
-          
+
           echo "Coverage is $COVERAGE%"
-          
-          echo "::set-output name=coverage::$COVERAGE"
+
+      - name: Set coverage output in environment file
+        run: echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
 
       - name: Upload coverage results
         uses: actions/upload-artifact@v2
