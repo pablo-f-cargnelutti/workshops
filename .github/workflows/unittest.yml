@@ -58,6 +58,7 @@ jobs:
       - name: Set coverage output in environment file
         run: echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
 
+
       - name: Upload coverage results
         uses: actions/upload-artifact@v2
         with:
